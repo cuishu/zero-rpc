@@ -1,6 +1,7 @@
 package generator
 
 type Method struct {
+	Package string
 	Comment string
 	Name    string
 	Param   string

@@ -69,8 +69,15 @@ func handleRPC(rpc *proto.RPC) {
 		Comment: strings.Join(comment, "\n"),
 		Name:    rpc.Name,
 		Param:   rpc.RequestType,
-		Return:  rpc.RequestType,
+		Return:  rpc.ReturnsType,
 	})
+}
+
+func mkdir() {
+	os.MkdirAll("config", 0755)
+	os.MkdirAll("logic", 0755)
+	os.MkdirAll("server", 0755)
+	os.MkdirAll("svc", 0755)
 }
 
 func main() {
@@ -90,6 +97,7 @@ func main() {
 		proto.WithPackage(handlePackage),
 		proto.WithRPC(handleRPC),
 	)
+	mkdir()
 	generator.GenerateProto(protoFile)
 	generator.GenerateCode(&spec)
 }

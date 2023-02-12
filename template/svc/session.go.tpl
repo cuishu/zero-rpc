@@ -3,7 +3,7 @@ package svc
 import (
 	"context"
 
-	"template/config"
+	"{{.Package}}/config"
 )
 
 type Session struct {
