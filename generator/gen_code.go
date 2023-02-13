@@ -141,6 +141,66 @@ func genConfigFile(spec *Spec) {
 	}
 }
 
+func genBuildSH(spec *Spec) {
+	filename := "build.sh"
+	if _, err := os.Stat(filename); err == nil {
+		return
+	}
+	os.WriteFile(filename, []byte(spec.Template.BuildSH), 0644)
+}
+
+func genMakefile(spec *Spec) {
+	filename := "Makefile"
+	if _, err := os.Stat(filename); err == nil {
+		return
+	}
+	os.WriteFile(filename, []byte(spec.Template.Makefile), 0644)
+}
+
+func genVersion() {
+	filename := "VERSION"
+	if _, err := os.Stat(filename); err == nil {
+		return
+	}
+	os.WriteFile(filename, []byte("v0.0.1"), 0644)
+}
+
+func genDockerFile(spec *Spec) {
+	filename := "Dockerfile"
+	if _, err := os.Stat(filename); err == nil {
+		return
+	}
+	t, err := template.New("Dockerfile").Parse(spec.Template.Dockerfile)
+	if err != nil {
+		panic(err)
+	}
+	file, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		panic(err)
+	}
+	if err := t.Execute(file, spec); err != nil {
+		panic(err)
+	}
+}
+
+func genGitIgnore(spec *Spec) {
+	filename := ".gitignore"
+	if _, err := os.Stat(filename); err == nil {
+		return
+	}
+	t, err := template.New(filename).Parse(spec.Template.GitIgnore)
+	if err != nil {
+		panic(err)
+	}
+	file, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		panic(err)
+	}
+	if err := t.Execute(file, spec); err != nil {
+		panic(err)
+	}
+}
+
 func GenerateCode(spec *Spec) {
 	genMain(spec)
 	genSession(spec)
@@ -150,6 +210,11 @@ func GenerateCode(spec *Spec) {
 	genLogic(spec)
 	genConfig(spec)
 	genConfigFile(spec)
+	genBuildSH(spec)
+	genMakefile(spec)
+	genVersion()
+	genDockerFile(spec)
+	genGitIgnore(spec)
 
 	cmd := exec.Command("go", "mod", "tidy")
 	cmd.Stdin = os.Stdin

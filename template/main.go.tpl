@@ -3,7 +3,9 @@
 package main
 
 import (
+	"flag"
 	"fmt"
+	"os"
 
 	"{{.Package}}/config"
 	"{{.Package}}/proto"
@@ -14,6 +16,22 @@ import (
 	"github.com/zeromicro/go-zero/zrpc"
 	"google.golang.org/grpc"
 )
+
+var (
+	BuildTime string
+	Version string
+)
+
+func init() {
+	var showVersion bool
+	flag.BoolVar(&showVersion, "v", false, "")
+	flag.Parse()
+	if showVersion {
+		fmt.Println("version: ", Version)
+		fmt.Println("build at:", BuildTime)
+		os.Exit(0)
+	}
+}
 
 func main() {
 	config, err := config.NewConfig("config/config.yaml")

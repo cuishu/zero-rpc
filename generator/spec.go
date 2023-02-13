@@ -23,6 +23,10 @@ type Template struct {
 	Logic      string
 	Config     string
 	ConfigFile string
+	BuildSH    string
+	Makefile   string
+	Dockerfile string
+	GitIgnore  string
 }
 
 type Spec struct {

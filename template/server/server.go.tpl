@@ -11,12 +11,12 @@ import (
 )
 
 type {{.Service.Name}}Server struct {
-	proto.SensitiveServer
+	proto.{{.Service.Name}}Server
 	svc  *svc.Svc
 }
 
-func NewSensitiveServer(svc *svc.Svc) *SensitiveServer {
-	return &SensitiveServer{
+func New{{.Service.Name}}Server(svc *svc.Svc) *{{.Service.Name}}Server {
+	return &{{.Service.Name}}Server{
 		svc: svc,
 	}
 }

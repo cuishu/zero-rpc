@@ -32,6 +32,14 @@ var (
 	configTmpl string
 	//go:embed template/config/config.yaml.gtpl
 	configFileTmpl string
+	//go:embed template/build.sh.gtpl
+	buildSHTmpl string
+	//go:embed template/Makefile.gtpl
+	makefileTmpl string
+	//go:embed template/Dockerfile.gtpl
+	dockerfileTmpl string
+	//go:embed template/gitignore.gtpl
+	gitignoreTmpl string
 )
 
 func init() {
@@ -49,6 +57,10 @@ func init() {
 	spec.Template.Logic = logicTmpl
 	spec.Template.Config = configTmpl
 	spec.Template.ConfigFile = configFileTmpl
+	spec.Template.BuildSH = buildSHTmpl
+	spec.Template.Makefile = makefileTmpl
+	spec.Template.Dockerfile = dockerfileTmpl
+	spec.Template.GitIgnore = gitignoreTmpl
 }
 
 func handleService(s *proto.Service) {
