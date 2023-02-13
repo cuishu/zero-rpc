@@ -1,7 +1,7 @@
 package generator
 
 type Method struct {
-	Package string
+	Module string
 	Comment string
 	Name    string
 	Param   string
@@ -30,6 +30,7 @@ type Template struct {
 }
 
 type Spec struct {
+	Module   string
 	Package  string
 	Service  Service
 	Template Template

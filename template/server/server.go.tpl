@@ -5,9 +5,9 @@ package server
 import (
 	"context"
 
-	"{{.Package}}/logic"
-	"{{.Package}}/proto"
-	"{{.Package}}/svc"
+	"{{.Module}}/logic"
+	"{{.Module}}/proto"
+	"{{.Module}}/svc"
 )
 
 type {{.Service.Name}}Server struct {

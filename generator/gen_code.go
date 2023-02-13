@@ -94,7 +94,7 @@ func genLogic(spec *Spec) {
 		if _, err := os.Stat(filename); err == nil {
 			continue
 		}
-		logic.Package = spec.Package
+		logic.Module = spec.Module
 		file, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY, 0644)
 		if err != nil {
 			panic(err)

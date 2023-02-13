@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io"
 	"os"
 	"strings"
 
@@ -97,6 +98,28 @@ func mkdir() {
 	os.MkdirAll("server", 0755)
 	os.MkdirAll("proto/client", 0755)
 	os.MkdirAll("svc", 0755)
+}
+
+func init() {
+	file, err := os.Open("go.mod")
+	if err != nil {
+		fmt.Println("please run `go mod init` befor do this")
+		os.Exit(0)
+	}
+	defer file.Close()
+	data, err:=io.ReadAll(file)
+	if err != nil {
+		panic(err)
+	}
+	slice := strings.Split(string(data), "\n")
+	if len(slice) == 0 {
+		panic("invalid file go.mod")
+	}
+	slice = strings.Split(slice[0], " ")
+	if len(slice) != 2 {
+		panic("invalid file go.mod")
+	}
+	spec.Module = slice[len(slice)-1]
 }
 
 func main() {

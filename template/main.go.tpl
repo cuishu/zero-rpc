@@ -7,10 +7,10 @@ import (
 	"fmt"
 	"os"
 
-	"{{.Package}}/config"
-	"{{.Package}}/proto"
-	"{{.Package}}/server"
-	"{{.Package}}/svc"
+	"{{.Module}}/config"
+	"{{.Module}}/proto"
+	"{{.Module}}/server"
+	"{{.Module}}/svc"
 
 	"github.com/zeromicro/go-zero/core/discov"
 	"github.com/zeromicro/go-zero/zrpc"

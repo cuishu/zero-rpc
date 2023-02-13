@@ -1,7 +1,7 @@
 package svc
 
 import (
-	"{{.Package}}/config"
+	"{{.Module}}/config"
 
 	etcdv3 "go.etcd.io/etcd/client/v3"
 )

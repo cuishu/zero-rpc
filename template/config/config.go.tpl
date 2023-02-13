@@ -11,7 +11,6 @@ type Etcd struct {
 }
 
 type Config struct {
-	ServiceName string `yaml:"service_name"`
 	Listen      string `yaml:"listen"`
 	Etcd        Etcd   `yaml:"etcd"`
 }
