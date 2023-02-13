@@ -42,7 +42,7 @@ func main() {
 		ListenOn: config.Listen,
 		Etcd: discov.EtcdConf{
 			Hosts: config.Etcd.Hosts,
-			Key: "{{.Package}}.rpc"
+			Key: "{{.Package}}.rpc",
 		},
 	}, func(s *grpc.Server) {
 		proto.Register{{.Service.Name}}Server(s, server.New{{.Service.Name}}Server(svc.NewSvc(config)))
