@@ -17,7 +17,9 @@ type Service struct {
 type Template struct {
 	Main       string
 	Session    string
+	Svc        string
 	Server     string
+	Client     string
 	Logic      string
 	Config     string
 	ConfigFile string

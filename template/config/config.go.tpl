@@ -6,8 +6,14 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+type Etcd struct {
+	Hosts []string `yaml:"hosts"`
+}
+
 type Config struct {
-	Listen string `yaml:"listen"`
+	ServiceName string `yaml:"service_name"`
+	Listen      string `yaml:"listen"`
+	Etcd        Etcd   `yaml:"etcd"`
 }
 
 func NewConfig(filename string) (*Config, error) {

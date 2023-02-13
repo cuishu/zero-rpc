@@ -3,6 +3,7 @@ package generator
 import (
 	"fmt"
 	"os"
+	"os/exec"
 	"text/template"
 )
 
@@ -35,9 +36,42 @@ func genSession(spec *Spec) {
 	}
 }
 
+func genSvc(spec *Spec) {
+	filename := "svc/svc.go"
+	if _, err := os.Stat(filename); err == nil {
+		return
+	}
+	t, err := template.New("session.go").Parse(spec.Template.Svc)
+	if err != nil {
+		panic(err)
+	}
+	file, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		panic(err)
+	}
+	if err := t.Execute(file, spec); err != nil {
+		panic(err)
+	}
+}
+
 func genServer(spec *Spec) {
 	filename := "server/server.go"
 	t, err := template.New("server.go").Parse(spec.Template.Server)
+	if err != nil {
+		panic(err)
+	}
+	file, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0644)
+	if err != nil {
+		panic(err)
+	}
+	if err := t.Execute(file, spec); err != nil {
+		panic(err)
+	}
+}
+
+func genClient(spec *Spec) {
+	filename := "proto/client/client.go"
+	t, err := template.New("server.go").Parse(spec.Template.Client)
 	if err != nil {
 		panic(err)
 	}
@@ -91,6 +125,9 @@ func genConfig(spec *Spec) {
 
 func genConfigFile(spec *Spec) {
 	filename := "config/config.yaml"
+	if _, err := os.Stat(filename); err == nil {
+		return
+	}
 	t, err := template.New("config.yaml").Parse(spec.Template.ConfigFile)
 	if err != nil {
 		panic(err)
@@ -107,8 +144,16 @@ func genConfigFile(spec *Spec) {
 func GenerateCode(spec *Spec) {
 	genMain(spec)
 	genSession(spec)
+	genSvc(spec)
 	genServer(spec)
+	genClient(spec)
 	genLogic(spec)
 	genConfig(spec)
 	genConfigFile(spec)
+
+	cmd := exec.Command("go", "mod", "tidy")
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	cmd.Run()
 }

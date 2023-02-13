@@ -20,8 +20,12 @@ var (
 	mainTmpl string
 	//go:embed template/svc/session.go.tpl
 	sessionTmpl string
+	//go:embed template/svc/svc.go.tpl
+	svcTmpl string
 	//go:embed template/server/server.go.tpl
 	serverTmpl string
+	//go:embed template/proto/client/client.go.tpl
+	clientTmpl string
 	//go:embed template/logic/logic.go.tpl
 	logicTmpl string
 	//go:embed template/config/config.go.tpl
@@ -39,7 +43,9 @@ func init() {
 	}
 	spec.Template.Main = mainTmpl
 	spec.Template.Session = sessionTmpl
+	spec.Template.Svc = svcTmpl
 	spec.Template.Server = serverTmpl
+	spec.Template.Client = clientTmpl
 	spec.Template.Logic = logicTmpl
 	spec.Template.Config = configTmpl
 	spec.Template.ConfigFile = configFileTmpl
@@ -77,6 +83,7 @@ func mkdir() {
 	os.MkdirAll("config", 0755)
 	os.MkdirAll("logic", 0755)
 	os.MkdirAll("server", 0755)
+	os.MkdirAll("proto/client", 0755)
 	os.MkdirAll("svc", 0755)
 }
 
