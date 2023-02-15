@@ -14,6 +14,7 @@ import (
 
 	"github.com/zeromicro/go-zero/core/discov"
 	"github.com/zeromicro/go-zero/zrpc"
+	_ "go.uber.org/automaxprocs"
 	"google.golang.org/grpc"
 )
 
