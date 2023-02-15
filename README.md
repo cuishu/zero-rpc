@@ -3,6 +3,9 @@
 **Powered By ```github.com/emicklei/proto```**
 
 ## install
+```
+go install github.com/cuishu/zero-rpc@latest
+```
 
 ## compile
 ```
