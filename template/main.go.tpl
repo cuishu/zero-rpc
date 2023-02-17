@@ -39,13 +39,21 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	srv, err := zrpc.NewServer(zrpc.RpcServerConf{
+	rpcConfig :=zrpc.RpcServerConf{
 		ListenOn: config.Listen,
 		Etcd: discov.EtcdConf{
 			Hosts: config.Etcd.Hosts,
 			Key: "{{.Package}}.rpc",
 		},
-	}, func(s *grpc.Server) {
+		CpuThreshold: 900,
+		Health: true,
+	}
+	rpcConfig.Middlewares.Trace = true
+	rpcConfig.Middlewares.Recover = true
+	rpcConfig.Middlewares.Stat = true
+	rpcConfig.Middlewares.Prometheus = true
+	rpcConfig.Middlewares.Breaker = true
+	srv, err := zrpc.NewServer(rpcConfig, func(s *grpc.Server) {
 		proto.Register{{.Service.Name}}Server(s, server.New{{.Service.Name}}Server(svc.NewSvc(config)))
 	})
 	if err != nil {
