@@ -25,7 +25,7 @@ var (
 	svcTmpl string
 	//go:embed template/server/server.go.tpl
 	serverTmpl string
-	//go:embed template/proto/client/client.go.tpl
+	//go:embed template/proto/client.go.tpl
 	clientTmpl string
 	//go:embed template/logic/logic.go.tpl
 	logicTmpl string
@@ -96,7 +96,7 @@ func mkdir() {
 	os.MkdirAll("config", 0755)
 	os.MkdirAll("logic", 0755)
 	os.MkdirAll("server", 0755)
-	os.MkdirAll("proto/client", 0755)
+	os.MkdirAll("proto", 0755)
 	os.MkdirAll("svc", 0755)
 }
 

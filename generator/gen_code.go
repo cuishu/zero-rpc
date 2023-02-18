@@ -70,7 +70,7 @@ func genServer(spec *Spec) {
 }
 
 func genClient(spec *Spec) {
-	filename := "proto/client/client.go"
+	filename := "proto/client.go"
 	t, err := template.New("server.go").Parse(spec.Template.Client)
 	if err != nil {
 		panic(err)
