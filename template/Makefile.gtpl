@@ -2,7 +2,7 @@ VERSION=$(shell cat VERSION)
 BUILD_TIME=$(shell date "+%F %T")
 GO_VERSION=$(shell go version)
 REGISTRY=
-PROGNAME==$(shell head -n1 go.mod|awk '{print $$2}' | awk -F '/' '{print $NF}' )
+PROGNAME=$(shell head -n1 go.mod|awk '{print $$2}' | awk -F '/' '{print $NF}' )
 LD_FLAGS="-X 'main.Version=${VERSION}' -X 'main.BuildTime=${BUILD_TIME}'"
 
 .PHONY: $(PROGNAME) test
