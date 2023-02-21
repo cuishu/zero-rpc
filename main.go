@@ -16,6 +16,7 @@ import (
 
 var (
 	protoFile string
+	genProto  bool
 	spec      generator.Spec
 	//go:embed template/main.go.tpl
 	mainTmpl string
@@ -41,13 +42,16 @@ var (
 	dockerfileTmpl string
 	//go:embed template/gitignore.gtpl
 	gitignoreTmpl string
+	//go:embed template/example.proto.gtpl
+	exampleProtoTmpl string
 )
 
 func init() {
 	flag.StringVar(&protoFile, "f", "", "proto filename")
+	flag.BoolVar(&genProto, "proto", false, "generate example proto file")
 	flag.Parse()
 
-	if protoFile == "" {
+	if protoFile == "" && !genProto {
 		os.Exit(0)
 	}
 	spec.Template.Main = mainTmpl
@@ -62,6 +66,7 @@ func init() {
 	spec.Template.Makefile = makefileTmpl
 	spec.Template.Dockerfile = dockerfileTmpl
 	spec.Template.GitIgnore = gitignoreTmpl
+	spec.Template.ExampleProtoTmpl = exampleProtoTmpl
 }
 
 func handleService(s *proto.Service) {
@@ -107,7 +112,7 @@ func init() {
 		os.Exit(0)
 	}
 	defer file.Close()
-	data, err:=io.ReadAll(file)
+	data, err := io.ReadAll(file)
 	if err != nil {
 		panic(err)
 	}
@@ -120,6 +125,14 @@ func init() {
 		panic("invalid file go.mod")
 	}
 	spec.Module = slice[len(slice)-1]
+	slice = strings.Split(spec.Module, "/")
+	spec.ShortModule = slice[len(slice)-1]
+	spec.Service.Name = strings.ToTitle(spec.ShortModule)
+	if genProto {
+		generator.GenerateProtoTemplate(&spec)
+		os.Exit(0)
+	}
+
 }
 
 func main() {

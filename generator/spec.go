@@ -1,7 +1,7 @@
 package generator
 
 type Method struct {
-	Module string
+	Module  string
 	Comment string
 	Name    string
 	Param   string
@@ -15,23 +15,25 @@ type Service struct {
 }
 
 type Template struct {
-	Main       string
-	Session    string
-	Svc        string
-	Server     string
-	Client     string
-	Logic      string
-	Config     string
-	ConfigFile string
-	BuildSH    string
-	Makefile   string
-	Dockerfile string
-	GitIgnore  string
+	Main             string
+	Session          string
+	Svc              string
+	Server           string
+	Client           string
+	Logic            string
+	Config           string
+	ConfigFile       string
+	BuildSH          string
+	Makefile         string
+	Dockerfile       string
+	GitIgnore        string
+	ExampleProtoTmpl string
 }
 
 type Spec struct {
-	Module   string
-	Package  string
-	Service  Service
-	Template Template
+	Module      string
+	ShortModule string
+	Package     string
+	Service     Service
+	Template    Template
 }
