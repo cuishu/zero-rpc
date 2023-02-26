@@ -12,6 +12,8 @@ import (
 	"github.com/cuishu/functools"
 	"github.com/cuishu/zero-rpc/generator"
 	"github.com/emicklei/proto"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 var (
@@ -124,10 +126,8 @@ func init() {
 	if len(slice) != 2 {
 		panic("invalid file go.mod")
 	}
-	spec.Module = slice[len(slice)-1]
-	slice = strings.Split(spec.Module, "/")
-	spec.ShortModule = slice[len(slice)-1]
-	spec.Service.Name = strings.ToTitle(spec.ShortModule)
+	spec.Module.Set(slice[len(slice)-1])
+	spec.Service.Name = cases.Title(language.English).String(spec.Module.Short)
 	if genProto {
 		generator.GenerateProtoTemplate(&spec)
 		os.Exit(0)

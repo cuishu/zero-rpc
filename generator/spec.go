@@ -1,5 +1,7 @@
 package generator
 
+import "strings"
+
 type Method struct {
 	Module  string
 	Comment string
@@ -30,10 +32,20 @@ type Template struct {
 	ExampleProtoTmpl string
 }
 
+type Module struct {
+	Name  string
+	Short string
+}
+
+func (m *Module) Set(name string) {
+	m.Name = name
+	slice := strings.Split(name, "/")
+	m.Short = slice[len(slice)-1]
+}
+
 type Spec struct {
-	Module      string
-	ShortModule string
-	Package     string
-	Service     Service
-	Template    Template
+	Module   Module
+	Package  string
+	Service  Service
+	Template Template
 }

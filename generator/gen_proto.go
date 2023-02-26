@@ -13,7 +13,7 @@ func GenerateProto(filename string) {
 }
 
 func GenerateProtoTemplate(spec *Spec) {
-	filename := fmt.Sprintf("%s.proto", spec.ShortModule)
+	filename := fmt.Sprintf("%s.proto", spec.Module.Short)
 	if _, err := os.Stat(filename); err == nil {
 		return
 	}
