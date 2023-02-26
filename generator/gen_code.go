@@ -7,23 +7,8 @@ import (
 	"text/template"
 )
 
-func genMain(spec *Spec) {
-	t, err := template.New("main.go").Parse(spec.Template.Main)
-	if err != nil {
-		panic(err)
-	}
-	file, err := os.OpenFile("main.go", os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0644)
-	if err != nil {
-		panic(err)
-	}
-	if err := t.Execute(file, spec); err != nil {
-		panic(err)
-	}
-}
-
-func genSession(spec *Spec) {
-	filename := "svc/session.go"
-	t, err := template.New("session.go").Parse(spec.Template.Session)
+func genFileOverwrite(filename, tmpl string, spec any) {
+	t, err := template.New(filename).Parse(tmpl)
 	if err != nil {
 		panic(err)
 	}
@@ -36,12 +21,11 @@ func genSession(spec *Spec) {
 	}
 }
 
-func genSvc(spec *Spec) {
-	filename := "svc/svc.go"
+func genFile(filename, tmpl string, spec any) {
 	if _, err := os.Stat(filename); err == nil {
 		return
 	}
-	t, err := template.New("session.go").Parse(spec.Template.Svc)
+	t, err := template.New(filename).Parse(tmpl)
 	if err != nil {
 		panic(err)
 	}
@@ -54,91 +38,50 @@ func genSvc(spec *Spec) {
 	}
 }
 
+func genMain(spec *Spec) {
+	genFileOverwrite("main.go", spec.Template.Main, spec)
+}
+
+func genSession(spec *Spec) {
+	filename := "svc/session.go"
+	genFileOverwrite(filename, spec.Template.Session, spec)
+}
+
+func genSvc(spec *Spec) {
+	filename := "svc/svc.go"
+	genFile(filename, spec.Template.Svc, spec)
+}
+
 func genServer(spec *Spec) {
 	filename := "server/server.go"
-	t, err := template.New("server.go").Parse(spec.Template.Server)
-	if err != nil {
-		panic(err)
-	}
-	file, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0644)
-	if err != nil {
-		panic(err)
-	}
-	if err := t.Execute(file, spec); err != nil {
-		panic(err)
-	}
+	genFileOverwrite(filename, spec.Template.Server, spec)
 }
 
 func genClient(spec *Spec) {
 	filename := "proto/client.go"
-	t, err := template.New("server.go").Parse(spec.Template.Client)
-	if err != nil {
-		panic(err)
-	}
-	file, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0644)
-	if err != nil {
-		panic(err)
-	}
-	if err := t.Execute(file, spec); err != nil {
-		panic(err)
-	}
+	genFileOverwrite(filename, spec.Template.Client, spec)
 }
 
 func genLogic(spec *Spec) {
-	t, err := template.New("logic.go").Parse(spec.Template.Logic)
-	if err != nil {
-		panic(err)
-	}
 	for _, logic := range spec.Service.Methods {
 		filename := fmt.Sprintf("logic/%s.go", logic.Name)
 		if _, err := os.Stat(filename); err == nil {
 			continue
 		}
 		logic.Module = spec.Module.Name
-		file, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY, 0644)
-		if err != nil {
-			panic(err)
-		}
-		if err := t.Execute(file, logic); err != nil {
-			panic(err)
-		}
+		genFile(filename, spec.Template.Logic, logic)
 	}
 }
 
 func genConfig(spec *Spec) {
 	filename := "config/config.go"
-	if _, err := os.Stat(filename); err == nil {
-		return
-	}
-	t, err := template.New("config.go").Parse(spec.Template.Config)
-	if err != nil {
-		panic(err)
-	}
-	file, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
-		panic(err)
-	}
-	if err := t.Execute(file, spec); err != nil {
-		panic(err)
-	}
+	genFile(filename, spec.Template.Config, spec)
 }
 
 func genConfigFile(spec *Spec) {
 	filename := "config/config.yaml"
-	if _, err := os.Stat(filename); err == nil {
-		return
-	}
-	t, err := template.New("config.yaml").Parse(spec.Template.ConfigFile)
-	if err != nil {
-		panic(err)
-	}
-	file, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
-		panic(err)
-	}
-	if err := t.Execute(file, spec); err != nil {
-		panic(err)
-	}
+	genFile(filename, spec.Template.ConfigFile, spec)
+	genFile("config/config.yaml.example", spec.Template.ConfigFile, spec)
 }
 
 func genBuildSH(spec *Spec) {
@@ -167,20 +110,7 @@ func genVersion() {
 
 func genDockerFile(spec *Spec) {
 	filename := "Dockerfile"
-	if _, err := os.Stat(filename); err == nil {
-		return
-	}
-	t, err := template.New("Dockerfile").Parse(spec.Template.Dockerfile)
-	if err != nil {
-		panic(err)
-	}
-	file, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
-		panic(err)
-	}
-	if err := t.Execute(file, spec); err != nil {
-		panic(err)
-	}
+	genFile(filename, spec.Template.Dockerfile, spec)
 }
 
 func genGitIgnore(spec *Spec) {

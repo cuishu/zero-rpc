@@ -1,6 +1,8 @@
 package generator
 
-import "strings"
+import (
+	"strings"
+)
 
 type Method struct {
 	Module  string
