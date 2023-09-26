@@ -24,9 +24,13 @@ func New{{.Service.Name}}Server(svc *svc.Svc) *{{.Service.Name}}Server {
 {{.Comment}}
 func (server {{$.Service.Name}}Server) {{.Name}}(ctx context.Context, input *proto.{{.Param}}) (*proto.{{.Return}}, error) {
 	defer server.svc.Logger.Sync()
-	return logic.{{.Name}}(&svc.Session{
+	resp, err := logic.{{.Name}}(&svc.Session{
 		Svc: *server.svc,
 		Ctx:    ctx,
 	}, input)
+	if err != nil {
+		server.svc.Logger.Error(err.Error())
+	}
+	return resp, err
 }
 {{end}}

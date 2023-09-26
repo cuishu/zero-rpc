@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package {{.ShortModule}};
+package {{.Module.Short}};
 option go_package="./proto";
 
 // 请求参数
