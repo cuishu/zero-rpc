@@ -1,16 +1,20 @@
 package svc
 
 import (
+	"github.com/go-redis/redis/v8"
 	"{{.Module.Name}}/config"
 
 	etcdv3 "go.etcd.io/etcd/client/v3"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 )
 
 type Svc struct {
 	Config *config.Config
 	Etcd   *etcdv3.Client
 	Logger *zap.SugaredLogger
+	Redis  *redis.Client
+	DB     *gorm.DB
 }
 
 func newEtcdClient(config *config.Config) *etcdv3.Client {

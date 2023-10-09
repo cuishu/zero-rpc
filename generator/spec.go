@@ -32,6 +32,8 @@ type Template struct {
 	Dockerfile       string
 	GitIgnore        string
 	ExampleProtoTmpl string
+	Postgres         string
+	Redis            string
 }
 
 type Module struct {

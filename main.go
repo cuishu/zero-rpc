@@ -46,6 +46,10 @@ var (
 	gitignoreTmpl string
 	//go:embed template/example.proto.gtpl
 	exampleProtoTmpl string
+	//go:embed template/svc/postgres.go.tpl
+	postgresTmpl string
+	//go:embed template/svc/redis.go.tpl
+	redisTmpl string
 )
 
 func init() {
@@ -69,6 +73,8 @@ func init() {
 	spec.Template.Dockerfile = dockerfileTmpl
 	spec.Template.GitIgnore = gitignoreTmpl
 	spec.Template.ExampleProtoTmpl = exampleProtoTmpl
+	spec.Template.Postgres = postgresTmpl
+	spec.Template.Redis = redisTmpl
 }
 
 func handleService(s *proto.Service) {

@@ -131,6 +131,14 @@ func genGitIgnore(spec *Spec) {
 	}
 }
 
+func genPostgres(spec *Spec) {
+	genFile("svc/postgres.go", spec.Template.Postgres, spec)
+}
+
+func genRedis(spec *Spec) {
+	genFile("svc/redis.go", spec.Template.Redis, spec)
+}
+
 func GenerateCode(spec *Spec) {
 	genMain(spec)
 	genSession(spec)
@@ -145,6 +153,8 @@ func GenerateCode(spec *Spec) {
 	genVersion()
 	genDockerFile(spec)
 	genGitIgnore(spec)
+	genPostgres(spec)
+	genRedis(spec)
 
 	cmd := exec.Command("go", "mod", "tidy")
 	cmd.Stdin = os.Stdin
