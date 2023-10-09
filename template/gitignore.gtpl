@@ -23,3 +23,4 @@ go.work
 {{.Package}}
 
 tmp
+config.yaml
